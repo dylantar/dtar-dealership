@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 from pathlib import Path
+
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -8,12 +9,14 @@ from pydantic import BaseModel
 from .data import LISTINGS
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
+
 app = FastAPI(title="dtar dealership API")
 
 
 @app.get("/")
 def root():
     return FileResponse(ROOT_DIR / "web" / "index.html")
+
 
 class Listing(BaseModel):
     id: int
