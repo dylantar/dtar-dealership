@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>dtar dealership</title>
+</head>
+<body>
+  <h1>dtar dealership</h1>
+  <form id="search-form">
+    <label>Make: <input id="make" name="make" /></label>
+    <label>Model: <input id="model" name="model" /></label>
+    <button type="submit">Search</button>
+  </form>
+  <ul id="results"></ul>
+  <script>
+    const form = document.getElementById('search-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const params = new URLSearchParams();
+      const make = document.getElementById('make').value;
+      const model = document.getElementById('model').value;
+      if (make) params.append('make', make);
+      if (model) params.append('model', model);
+      const response = await fetch('/search?' + params.toString());
+      const data = await response.json();
+      const results = document.getElementById('results');
+      results.innerHTML = '';
+      data.listings.forEach(l => {
+        const item = document.createElement('li');
+        item.textContent = `${l.year} ${l.make} ${l.model} - $${l.price} (${l.label})`;
+        results.appendChild(item);
+      });
+    });
+  </script>
+</body>
+</html>
